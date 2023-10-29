@@ -69,15 +69,18 @@ static void MX_USB_OTG_FS_PCD_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 void delayInit( delay_t * delay, tick_t duration ){
-	bool running_init = false;
+	bool running_init_state = false;
 
 	delayWrite(delay, duration);
-	delay->running = running_init;
+	delay->running = running_init_state;
 }
 
 bool_t delayRead( delay_t * delay ){
 	if(delay->running){
-		return ((HAL_GetTick() - delay->startTime) >= delay->duration);
+		if ((HAL_GetTick() - delay->startTime) >= delay->duration){
+			delay->running = false;
+			return true;
+		}
 	} else {
 		delay->startTime = HAL_GetTick();
 		delay->running = true;
@@ -96,7 +99,12 @@ void delayWrite( delay_t * delay, tick_t duration ){
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	tick_t led_time_on_off = 100;
+	delay_t led_delay={
+			.startTime = 0,
+			.duration = 0,
+			.running = false
+	};
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -105,14 +113,14 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  delayInit(&led_delay, led_time_on_off);
   /* USER CODE END Init */
 
   /* Configure the system clock */
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+  BSP_LED_Init(LED2);
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -128,6 +136,9 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  if(delayRead(&led_delay)){
+		  BSP_LED_Toggle(LED2);
+	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

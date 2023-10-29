@@ -28,15 +28,17 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
-
+#include "stm32f4xx_nucleo_144.h"   /* <- BSP include */
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
 #include <stdbool.h>
+
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-typedef uint32_t tick_t; // include stdio?
+typedef uint32_t tick_t; // Biblioteca: <stdint.h>
 typedef bool bool_t;	 // Biblioteca: <stdbool.h>
 typedef struct{
    tick_t startTime;
