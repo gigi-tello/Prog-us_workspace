@@ -87,6 +87,7 @@ bool_t delayRead( delay_t * delay ){
 	}
 	return false;
 }
+
 void delayWrite( delay_t * delay, tick_t duration ){
 	delay->duration = duration;
 }
@@ -99,12 +100,20 @@ void delayWrite( delay_t * delay, tick_t duration ){
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+
 	tick_t led_time_on_off = 100;
 	delay_t led_delay={
 			.startTime = 0,
 			.duration = 0,
 			.running = false
 	};
+
+	uint8_t repetitions = 10;
+	uint8_t repetitions_counter = 0;
+
+	tick_t period_ms[] = {500, 100, 50}; //Vector para periodos de 1000 ms, 200 ms y 100 ms
+	uint8_t period_counter = 0;
+	uint8_t period_ammount = (sizeof(period_ms) / sizeof(period_ms[0]));
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -136,9 +145,24 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  //Si se cumplió el tiempo de retardo, cambio el estado del led y avanzo el contador de veces
 	  if(delayRead(&led_delay)){
-		  BSP_LED_Toggle(LED2);
+	  		  BSP_LED_Toggle(LED2);
+	  		  repetitions_counter++;
 	  }
+
+	  //Si ya titiló 5 veces, cambio de período y reseteo el contador de veces
+	  if(repetitions_counter == repetitions){
+		  delayWrite(&led_delay, period_ms[period_counter]);
+		  period_counter++;
+		  repetitions_counter = 0;
+	  }
+
+	  //Reseteo el contador para el vector de períodos
+	  if(period_counter == period_ammount){
+		  period_counter = 0;
+	  }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
