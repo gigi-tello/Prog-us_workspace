@@ -78,8 +78,8 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 
-	tick_t led_time_on_off = 100; //200 ms
-	delay_t led_delay={
+	tick_t led_time_on_off = 100; //Semiperiodo para una señal de T=200 ms, Duty=50%
+	delay_t led_delay={			  //Inicializo la estructura del delay
 			.startTime = 0,
 			.duration = 0,
 			.running = false
@@ -93,7 +93,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  delayInit(&led_delay, led_time_on_off);
+  delayInit(&led_delay, led_time_on_off); // Inicializo el contador
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -116,8 +116,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(delayRead(&led_delay)){
-			  BSP_LED_Toggle(LED2);
+	  if(delayRead(&led_delay)){ 	//Si delayRead devuelve true se cumplió el
+			  BSP_LED_Toggle(LED2); //tiempo, entonces cambio el estado del led
 		  }
 
 
