@@ -79,7 +79,7 @@ int main(void)
   /* USER CODE BEGIN 1 */
 
 	tick_t led_semiperiod_1 = 50;	//Semiperiodo para una señal de T=200 ms, Duty=50%
-	tick_t led_semiperiod_2 = 250;	//Semiperiodo para una señal de T=200 ms, Duty=50%
+	tick_t led_semiperiod_2 = 250;	//Semiperiodo para una señal de T=500 ms, Duty=50%
 	tick_t led_semiperiod = led_semiperiod_1; //Inicializo el primer periodo
 	delay_t led_delay={			  //Inicializo la estructura del delay del parpadeo del led
 			.startTime = 0,
