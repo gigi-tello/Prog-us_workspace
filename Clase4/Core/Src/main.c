@@ -78,15 +78,17 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 
-	tick_t led_time_on_off = 100; //Semiperiodo para una señal de T=200 ms, Duty=50%
-	delay_t led_delay={			  //Inicializo el delay del parpadeo del led
+	tick_t led_semiperiod_1 = 50;	//Semiperiodo para una señal de T=200 ms, Duty=50%
+	tick_t led_semiperiod_2 = 250;	//Semiperiodo para una señal de T=200 ms, Duty=50%
+	tick_t led_semiperiod = led_semiperiod_1; //Inicializo el primer periodo
+	delay_t led_delay={			  //Inicializo la estructura del delay del parpadeo del led
 			.startTime = 0,
 			.duration = 0,
 			.running = false
 	};
 
-	tick_t debounce_time = 40; //Tiempo de debounce: 40 ms
-	delay_t debounce_delay={			  //Inicializo el delay del debounce
+	tick_t debounce_time = 40;	//Tiempo de debounce: 40 ms
+	delay_t debounce_delay={	//Inicializo la estructura del delay del debounce
 			.startTime = 0,
 			.duration = 0,
 			.running = false
@@ -101,13 +103,12 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  delayInit(&led_delay, led_time_on_off); // Inicializo el contador del led
-  delayInit(&debounce_delay, debounce_time); // Inicializo el contador del debounce
+  delayInit(&led_delay, led_semiperiod_1);		// Inicializo el contador del led
+  delayInit(&debounce_delay, debounce_time);	// Inicializo el contador del debounce
   /* USER CODE END Init */
 
   /* Configure the system clock */
   SystemClock_Config();
-
   /* USER CODE BEGIN SysInit */
   BSP_LED_Init(LED2);
   BSP_PB_Init(BUTTON_USER, BUTTON_MODE_GPIO);
@@ -128,22 +129,17 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(delayRead(&debounce_delay)){ 		 //Si delayRead devuelve true se cumplió el
-		  debounceFSM_update(&debounce_state); //tiempo, entonces chequeo el estado del botón
-		  switch(debounce_state){
-			  case BUTTON_UP:
-				  BSP_LED_Off(LED2);
-				  break;
-			  case BUTTON_DOWN:
-				  BSP_LED_On(LED2);
-				  break;
-			  default:
-				  BSP_LED_Off(LED2);
-				  break;
-		}
-		  //BSP_LED_Toggle(LED2);
+	  if(delayRead(&led_delay)){ // Si se cumplió el semiperiodo del led, cambio el estado
+		  BSP_LED_Toggle(LED2);
 	  }
 
+	  if(delayRead(&debounce_delay)){			//Si delayRead devuelve true se cumplió el
+		  debounceFSM_update(&debounce_state);	//	tiempo, entonces chequeo el estado del botón
+	  	  if(debounce_state == BUTTON_DOWN){	//Si se presionó el botón, cambio de periodo de parpadeo
+	  		  led_semiperiod = (led_semiperiod == led_semiperiod_1) ? led_semiperiod_2 : led_semiperiod_1;
+	  		  delayWrite(&led_delay, led_semiperiod);
+	  	  }
+	  }
 
 	  /* USER CODE END WHILE */
 
