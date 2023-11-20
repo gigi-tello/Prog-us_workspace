@@ -11,7 +11,7 @@
 #include <API_uart.h>
 #include "string.h"
 
-UART_HandleTypeDef huart3;
+static UART_HandleTypeDef huart3;
 
 /*
 * @brief Inicializa la uart3.
@@ -59,4 +59,8 @@ void uartSendStringSize(uint8_t * pstring, uint16_t size){
 	HAL_UART_Transmit(&huart3, pstring, size, timeout);
 };
 
+/*
+* @brief Recibe 'size' caracteres a la cadena pstring por la uart.
+* Se deja comentada ya que no se usa por ahora
+*/
 // void uartReceiveStringSize(uint8_t * pstring, uint16_t size);
