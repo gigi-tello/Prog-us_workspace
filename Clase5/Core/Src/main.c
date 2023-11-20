@@ -81,16 +81,6 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 
-	/*
-	tick_t led_semiperiod_1 = 50;	//Semiperiodo para una señal de T=200 ms, Duty=50%
-	tick_t led_semiperiod_2 = 250;	//Semiperiodo para una señal de T=500 ms, Duty=50%
-	tick_t led_semiperiod = led_semiperiod_1; //Inicializo el primer periodo
-	delay_t led_delay={			  //Inicializo la estructura del delay del parpadeo del led
-			.startTime = 0,
-			.duration = 0,
-			.running = false
-	};
-
 	tick_t debounce_time = 40;	//Tiempo de debounce: 40 ms
 	delay_t debounce_delay={	//Inicializo la estructura del delay del debounce
 			.startTime = 0,
@@ -98,8 +88,11 @@ int main(void)
 			.running = false
 	};
 	debounceState_t debounce_state;
-*/
-	bool_t uart_init = false;
+
+	bool_t uart_initiailzed = false;
+
+	uint8_t * string_button_down = (uint8_t *)"Flanco descendente\n\r";
+	uint8_t * string_button_up = (uint8_t *)"Flanco ascendente\n\r";
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -109,17 +102,18 @@ int main(void)
 
   /* USER CODE BEGIN Init */
   // delayInit(&led_delay, led_semiperiod_1);		// Inicializo el contador del led
-  // delayInit(&debounce_delay, debounce_time);	// Inicializo el contador del debounce
+  delayInit(&debounce_delay, debounce_time);	// Inicializo el contador del debounce
   /* USER CODE END Init */
 
   /* Configure the system clock */
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-  uart_init = uartInit();
+  uart_initiailzed = uartInit();
+  BSP_LED_Init(LED1);
   BSP_LED_Init(LED2);
   BSP_PB_Init(BUTTON_USER, BUTTON_MODE_GPIO);
-  // debounceFSM_init(&debounce_state);
+  debounceFSM_init(&debounce_state);
 
   /* USER CODE END SysInit */
 
@@ -135,8 +129,20 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(uart_init){ //Prendo el led si inicializó la uart
-		  BSP_LED_On(LED2);
+	  if(uart_initiailzed){ //Prendo el led 1 si inicializó la uart
+		  BSP_LED_On(LED1);
+	  }
+
+
+	  if(delayRead(&debounce_delay)){			//Si delayRead devuelve true se cumplió el
+		  debounceFSM_update(&debounce_state);	//	tiempo, entonces chequeo el estado del botón
+	  	  if(debounce_state == BUTTON_FALLING){	//Si el botón está presionado, apago el led 2
+	  		uartSendString(string_button_down);
+	  		BSP_LED_Off(LED2);
+	  	  } else if (debounce_state == BUTTON_RISING){	//Si el botón no está presionado, prendo el led 2
+	  		uartSendString(string_button_up);
+		  		BSP_LED_On(LED2);
+		  }
 	  }
 
     /* USER CODE END WHILE */
