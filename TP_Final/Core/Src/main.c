@@ -108,7 +108,9 @@ int main(void)
 			.min = 0,
 			.seg = 0,
 	};
+	temp_t temp=0;
 	uint8_t msgFh[100];
+	uint8_t msgTmp[10];
 
   /* USER CODE END 1 */
 
@@ -141,7 +143,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  //Set_Time(00, 13, 23, 5, 7, 12, 23);
+  //ajustar_fecha_hora(23, 12, 8, 6, 11, 59, 30);
   while (1)
   {
     /* USER CODE END WHILE */
@@ -157,8 +159,13 @@ int main(void)
 	//	lcd_enviar_comando(INIT_CMD);
 
 	  fechaHora = leer_fecha_hora();
+	  temp = leer_temp();
 	  sprintf(msgFh, "%u-%u-%u %u:%u:%u\r\n", fechaHora.anio, fechaHora.mes, fechaHora.dia, fechaHora.hora, fechaHora.min, fechaHora.seg);
+	  sprintf(msgTmp, "%.2f C\r\n", temp);
+
 	  uartSendString(msgFh);
+
+	  uartSendString(msgTmp);
 
 
 		  BSP_LED_Toggle(LED2);

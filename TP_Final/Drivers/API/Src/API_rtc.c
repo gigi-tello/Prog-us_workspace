@@ -1,14 +1,12 @@
 #include "API_rtc.h"
 
-// Convert normal decimal numbers to binary coded decimal
-uint8_t dec2bcd(int val)
-{
+// Convierte de decimal a bcd
+uint8_t dec2bcd(int val){
   return (uint8_t)( (val/10*16) + (val%10) );
 }
-// Convert binary coded decimal to normal decimal numbers
+// Convierte de bcd a decimal
 // Multiplica al nibble alto por 10, y le suma el nibble bajo
-static uint8_t bcd2dec(uint8_t bcd)
-{
+static uint8_t bcd2dec(uint8_t bcd){
   int dec = ((bcd & 0xF0) >> 4) * 10 + (bcd & 0x0F);
   return dec;
 }
@@ -16,12 +14,12 @@ static uint8_t bcd2dec(uint8_t bcd)
 dateTime_t leer_fecha_hora(void){
 	dateTime_t dato;
 	uint8_t dato_leido[7];
-	HAL_I2C_Mem_Read(&hi2c1, RTC_ADDR, MEM_ADDR, 1, dato_leido, 7, RTC_TIMEOUT);
+	HAL_I2C_Mem_Read(&hi2c1, RTC_ADDR, MEM_REG, 1, dato_leido, CANT_REG_FH, RTC_TIMEOUT);
 
 	dato.seg = bcd2dec(dato_leido[0]);
 	dato.min = bcd2dec(dato_leido[1]);
 	dato.hora = bcd2dec(dato_leido[2]);
-
+	//dato_leido[3] corresponde al día de la semana
 	dato.dia = bcd2dec(dato_leido[4]);
 	dato.mes = bcd2dec(dato_leido[5]);
 	dato.anio = bcd2dec(dato_leido[6]);
@@ -45,16 +43,25 @@ uint8_t* obtener_hora(void){
 	return *hora;
 }
 
-void Set_Time (uint8_t sec, uint8_t min, uint8_t hour, uint8_t dow, uint8_t dom, uint8_t month, uint8_t year)
-{
+void ajustar_fecha_hora(uint8_t anio, uint8_t mes, uint8_t dia_semana, uint8_t dia_mes, uint8_t hora, uint8_t min, uint8_t seg){
 	uint8_t set_time[7];
-	set_time[0] = dec2bcd(sec);
+	set_time[0] = dec2bcd(seg);
 	set_time[1] = dec2bcd(min);
-	set_time[2] = dec2bcd(hour);
-	set_time[3] = dec2bcd(dow);
-	set_time[4] = dec2bcd(dom);
-	set_time[5] = dec2bcd(month);
-	set_time[6] = dec2bcd(year);
+	set_time[2] = dec2bcd(hora);
+	set_time[3] = dec2bcd(dia_semana);
+	set_time[4] = dec2bcd(dia_mes);
+	set_time[5] = dec2bcd(mes);
+	set_time[6] = dec2bcd(anio);
 
-	HAL_I2C_Mem_Write(&hi2c1, RTC_ADDR, 0x00, 1, set_time, 7, 1000);
+	HAL_I2C_Mem_Write(&hi2c1, RTC_ADDR, MEM_REG, 1, set_time, CANT_REG_FH, RTC_TIMEOUT);
+}
+
+//Lee la temperatura desde los registros 0x11 y 0x12
+//En 0x11 está la parte entera del valor, y en 0x12 la parte decimal
+//La resolución es 0.25gC por eso la parte decimal se divide por 4
+temp_t leer_temp (void){
+	uint8_t temp[2];
+	HAL_I2C_Mem_Read(&hi2c1, RTC_ADDR, TEMP_REG, 1, temp, CANT_REG_TEMP, RTC_TIMEOUT);
+
+	return ((temp[0])+(temp[1]>>6)*0.25);
 }
