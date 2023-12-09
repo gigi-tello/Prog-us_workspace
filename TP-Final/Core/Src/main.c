@@ -51,7 +51,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+	uint8_t mostrar_pantalla = PAGINA_OPCIONES;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -106,11 +106,11 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_Delay(100);
     lcd_init();
-//    char mensaje[] = "Hola";
-//    lcd_enviar_cadena(mensaje);
-//    lcd_pos_cursor(1,5);
-//    lcd_enviar_cadena("mundo");
-//    HAL_Delay(500);
+    char mensaje[] = "Hola";
+    lcd_enviar_cadena(mensaje);
+    lcd_pos_cursor(1,5);
+    lcd_enviar_cadena("mundo");
+    HAL_Delay(500);
 
   /* USER CODE END 2 */
 
@@ -118,34 +118,25 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-//	  switch(boton){
-//	      case BOT_ADELANTE:
-//	    	  if (en_pant_opciones){
-//	    		  if(opcion == MOSTRAR_FECHA){
-//	    			  pag_fecha();
-//	    		  }
-//	    		  else if
-//	    	  }
-//	          break;
-//	      case BOT_ARRIBA:
-//	          string = STR_ARRIBA;
-//	          break;
-//	      case BOT_ABAJO:
-//	          string = STR_ABAJO;
-//	          break;
-//	      case BOT_ATRAS:
-//	          string = STR_ATRAS;
-//	          break;
-//	      default:
-//	          string = STR_NINGUNO;
-//	          break;
-//	      }
-	  pag_opciones();
-	  pag_fila_cursor(OPCION_MOSTRAR_FECHA);
-	  HAL_Delay(1000);
-	  pag_opciones();
-	  pag_fila_cursor(OPCION_MOSTRAR_TEMP);
-	  HAL_Delay(1000);
+	  switch(mostrar_pantalla){
+	      case PAGINA_OPCIONES:
+	    	  pag_opciones();
+	          break;
+	      case PAGINA_FECHA:
+	    	  pag_fecha();
+	          break;
+	      case PAGINA_TEMP:
+	    	  pag_temp();
+	          break;
+	      default:
+	          break;
+	      }
+//	  pag_opciones();
+//	  pag_fila_cursor(OPCION_MOSTRAR_FECHA);
+//	  HAL_Delay(1000);
+//	  pag_opciones();
+//	  pag_fila_cursor(OPCION_MOSTRAR_TEMP);
+//	  HAL_Delay(1000);
 
 //	  pag_fecha();
 //	  HAL_Delay(1000);

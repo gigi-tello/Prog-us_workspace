@@ -15,7 +15,7 @@
 #define STR_ATRAS (uint8_t *)"Boton atras\n\r";
 #define STR_NINGUNO (uint8_t *)"Ningun boton\n\r";
 
-uint8_t obtener_boton_presionado(uint32_t req);
+uint8_t obtener_boton_presionado();
 uint8_t * str_boton(uint8_t boton);
 
 #endif /*API_KEYPAD_H*/

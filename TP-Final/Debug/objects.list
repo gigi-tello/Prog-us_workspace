@@ -12,6 +12,7 @@
 "./Core/Src/usart.o"
 "./Core/Src/usb_otg.o"
 "./Core/Startup/startup_stm32f439zitx.o"
+"./Drivers/API/Src/API_adc.o"
 "./Drivers/API/Src/API_keypad.o"
 "./Drivers/API/Src/API_lcd.o"
 "./Drivers/API/Src/API_rtc.o"

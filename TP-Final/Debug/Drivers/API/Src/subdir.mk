@@ -5,16 +5,19 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Drivers/API/Src/API_adc.c \
 ../Drivers/API/Src/API_keypad.c \
 ../Drivers/API/Src/API_lcd.c \
 ../Drivers/API/Src/API_rtc.c 
 
 OBJS += \
+./Drivers/API/Src/API_adc.o \
 ./Drivers/API/Src/API_keypad.o \
 ./Drivers/API/Src/API_lcd.o \
 ./Drivers/API/Src/API_rtc.o 
 
 C_DEPS += \
+./Drivers/API/Src/API_adc.d \
 ./Drivers/API/Src/API_keypad.d \
 ./Drivers/API/Src/API_lcd.d \
 ./Drivers/API/Src/API_rtc.d 
@@ -27,7 +30,7 @@ Drivers/API/Src/%.o Drivers/API/Src/%.su Drivers/API/Src/%.cyclo: ../Drivers/API
 clean: clean-Drivers-2f-API-2f-Src
 
 clean-Drivers-2f-API-2f-Src:
-	-$(RM) ./Drivers/API/Src/API_keypad.cyclo ./Drivers/API/Src/API_keypad.d ./Drivers/API/Src/API_keypad.o ./Drivers/API/Src/API_keypad.su ./Drivers/API/Src/API_lcd.cyclo ./Drivers/API/Src/API_lcd.d ./Drivers/API/Src/API_lcd.o ./Drivers/API/Src/API_lcd.su ./Drivers/API/Src/API_rtc.cyclo ./Drivers/API/Src/API_rtc.d ./Drivers/API/Src/API_rtc.o ./Drivers/API/Src/API_rtc.su
+	-$(RM) ./Drivers/API/Src/API_adc.cyclo ./Drivers/API/Src/API_adc.d ./Drivers/API/Src/API_adc.o ./Drivers/API/Src/API_adc.su ./Drivers/API/Src/API_keypad.cyclo ./Drivers/API/Src/API_keypad.d ./Drivers/API/Src/API_keypad.o ./Drivers/API/Src/API_keypad.su ./Drivers/API/Src/API_lcd.cyclo ./Drivers/API/Src/API_lcd.d ./Drivers/API/Src/API_lcd.o ./Drivers/API/Src/API_lcd.su ./Drivers/API/Src/API_rtc.cyclo ./Drivers/API/Src/API_rtc.d ./Drivers/API/Src/API_rtc.o ./Drivers/API/Src/API_rtc.su
 
 .PHONY: clean-Drivers-2f-API-2f-Src
 
