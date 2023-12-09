@@ -28,6 +28,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "common.h"
+#include "API_adc.h"
 #include "API_lcd.h"
 #include "API_keypad.h"
 #include "API_rtc.h"
@@ -77,7 +78,9 @@ int main(void)
 //	bool_t en_pant_fecha = false;
 //	bool_t en_pant_temp = false;
 //	bool_t boton_presionado = false;
-
+	uint8_t btn_pres = 0;
+	char* btn_str;
+	char msg[16];
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -118,6 +121,19 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+//	  lcd_borrar();
+//	  lcd_pos_cursor(0,0);
+	  btn_pres = obtener_boton_presionado();
+	  btn_str =  str_boton(btn_pres);
+
+	  //sprintf(msg, "Valor: %lu\r\n", btn_adc);
+	  //HAL_UART_Transmit(&huart3, msg, strlen(msg), 1000);
+	  HAL_UART_Transmit(&huart3, btn_str, strlen(btn_str), 1000);
+	  HAL_UART_Transmit(&huart3, (char *)"\r\n", strlen("\r\n"), 1000);
+
+//	  lcd_enviar_cadena(btn_str);
+//	  HAL_Delay(500);
+
 	  switch(mostrar_pantalla){
 	      case PAGINA_OPCIONES:
 	    	  pag_opciones();
@@ -131,6 +147,7 @@ int main(void)
 	      default:
 	          break;
 	      }
+
 //	  pag_opciones();
 //	  pag_fila_cursor(OPCION_MOSTRAR_FECHA);
 //	  HAL_Delay(1000);

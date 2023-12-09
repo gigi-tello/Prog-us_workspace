@@ -5,7 +5,7 @@ void pag_opciones(void){
     |>Mostrar fecha  |
     | Mostrar temp   |
     */
-	bool_t boton_presionado = false;
+	bool_t opcion_seleccionada = false;
 	uint8_t boton = BOT_NINGUNO;
 	uint8_t pos_cursor = OPCION_MOSTRAR_FECHA;
 
@@ -14,8 +14,9 @@ void pag_opciones(void){
     lcd_enviar_cadena(MSJ_MOSTRAR_FECHA);
     lcd_pos_cursor(1, 1);
     lcd_enviar_cadena(MSJ_MOSTRAR_TEMP);
+	pag_fila_cursor(pos_cursor);
 
-    while(boton_presionado == false){
+    while(opcion_seleccionada == false){
     	boton = obtener_boton_presionado();
 
     	switch (boton){
@@ -24,14 +25,12 @@ void pag_opciones(void){
     			pos_cursor = OPCION_MOSTRAR_TEMP;
     			pag_fila_cursor(pos_cursor);
     		}
-    		boton_presionado = true;
     		break;
     	case BOT_ARRIBA :
     		if(pos_cursor == OPCION_MOSTRAR_TEMP){
     			pos_cursor = OPCION_MOSTRAR_FECHA;
     			pag_fila_cursor(pos_cursor);
     		}
-    		boton_presionado = true;
     		break;
     	case BOT_ADELANTE :
     		if(pos_cursor == OPCION_MOSTRAR_FECHA){
@@ -40,7 +39,7 @@ void pag_opciones(void){
     		else if(pos_cursor == OPCION_MOSTRAR_TEMP){
     			mostrar_pantalla = PAGINA_TEMP;
     		}
-    		boton_presionado = true;
+    		opcion_seleccionada = true;
     		break;
     	default:
     		break;
