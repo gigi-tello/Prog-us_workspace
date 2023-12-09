@@ -1,0 +1,8 @@
+../Drivers/API/Src/API_rtc.c:4:9:dec2bcd	1
+../Drivers/API/Src/API_rtc.c:9:16:bcd2dec	1
+../Drivers/API/Src/API_rtc.c:14:12:leer_fecha_hora	1
+../Drivers/API/Src/API_rtc.c:30:6:obtener_fecha	1
+../Drivers/API/Src/API_rtc.c:38:6:obtener_hora	1
+../Drivers/API/Src/API_rtc.c:45:6:ajustar_fecha_hora	1
+../Drivers/API/Src/API_rtc.c:61:8:leer_temp	1
+../Drivers/API/Src/API_rtc.c:68:6:obtener_temp	1
