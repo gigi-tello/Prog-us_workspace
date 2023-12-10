@@ -5,6 +5,7 @@
 #include "API_rtc.h"
 #include "API_lcd.h"
 #include "API_keypad.h"
+#include "API_delay.h"
 
 #define MSJ_MOSTRAR_FECHA "Mostrar fecha"
 #define MSJ_MOSTRAR_TEMP "Mostrar temp"

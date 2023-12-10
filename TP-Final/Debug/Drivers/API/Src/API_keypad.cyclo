@@ -1,2 +1,2 @@
 ../Drivers/API/Src/API_keypad.c:4:9:obtener_boton_presionado	5
-../Drivers/API/Src/API_keypad.c:19:11:str_boton	5
+../Drivers/API/Src/API_keypad.c:21:11:str_boton	5

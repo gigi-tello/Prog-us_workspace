@@ -1,4 +1,6 @@
 #include "pantallas.h"
+#include "usart.h"
+
 
 void pag_opciones(void){
     /*
@@ -6,8 +8,20 @@ void pag_opciones(void){
     | Mostrar temp   |
     */
 	bool_t opcion_seleccionada = false;
+	bool_t lectura_boton_habilitada = true;
+
 	uint8_t boton = BOT_NINGUNO;
 	uint8_t pos_cursor = OPCION_MOSTRAR_FECHA;
+
+    tick_t led_time_on_off = 100; //Semiperiodo para una señal de T=200 ms, Duty=50%
+    delay_t led_delay={           //Inicializo la estructura del delay
+            .startTime = 0,
+            .duration = 0,
+            .running = false
+    };
+	char* btn_str;
+
+	delayInit(&led_delay, led_time_on_off);
 
 	lcd_borrar();
 	lcd_pos_cursor(0, 1);
@@ -17,19 +31,31 @@ void pag_opciones(void){
 	pag_fila_cursor(pos_cursor);
 
     while(opcion_seleccionada == false){
-    	boton = obtener_boton_presionado();
+        if(delayRead(&led_delay)){    //Si delayRead devuelve true se cumplió el
+        	lectura_boton_habilitada = true; //tiempo, entonces cambio el estado del led
+        }
+
+        if(lectura_boton_habilitada){
+        	boton = obtener_boton_presionado();
+    		btn_str =  str_boton(boton);
+        }
+
+  	  HAL_UART_Transmit(&huart3, btn_str, strlen(btn_str), 1000);
+  	  HAL_UART_Transmit(&huart3, (char *)"\r\n", strlen("\r\n"), 1000);
 
     	switch (boton){
     	case BOT_ABAJO :
     		if(pos_cursor == OPCION_MOSTRAR_FECHA){
     			pos_cursor = OPCION_MOSTRAR_TEMP;
     			pag_fila_cursor(pos_cursor);
+    			lectura_boton_habilitada = false;
     		}
     		break;
     	case BOT_ARRIBA :
     		if(pos_cursor == OPCION_MOSTRAR_TEMP){
     			pos_cursor = OPCION_MOSTRAR_FECHA;
     			pag_fila_cursor(pos_cursor);
+    			lectura_boton_habilitada = false;
     		}
     		break;
     	case BOT_ADELANTE :

@@ -16,7 +16,7 @@ S_DEPS += \
 
 # Each subdirectory must supply rules for building sources it contributes
 Core/Startup/%.o: ../Core/Startup/%.s Core/Startup/subdir.mk
-	arm-none-eabi-gcc -mcpu=cortex-m4 -g3 -DDEBUG -c -I"/home/gigi/Facu/CESE/Programacion de micros/Prog-us_workspace/TP-Final/Drivers/API/Inc" -I"/home/gigi/Facu/CESE/Programacion de micros/Prog-us_workspace/TP-Final/Drivers/API/Src" -x assembler-with-cpp -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@" "$<"
+	arm-none-eabi-gcc -mcpu=cortex-m4 -g3 -DDEBUG -c -I"/home/gigi/Facu/CESE/Programacion de micros/Prog-us_workspace/TP-Final/Drivers/API/Inc" -I"/home/gigi/Facu/CESE/Programacion de micros/Prog-us_workspace/TP-Final/Drivers/API/Src" -I"/home/gigi/Facu/CESE/Programacion de micros/Prog-us_workspace/TP-Final/Drivers/BSP/STM32F4xx_Nucleo_144" -x assembler-with-cpp -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@" "$<"
 
 clean: clean-Core-2f-Startup
 
