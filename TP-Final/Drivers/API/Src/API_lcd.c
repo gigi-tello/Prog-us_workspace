@@ -1,3 +1,11 @@
+/**
+  ******************************************************************************
+  * @file    API_lcd.c
+  * @author  Giselle Tello de Meneses
+  * @brief   Biblioteca para manejar el lcd.
+  ******************************************************************************
+  **/
+
 #include <API_lcd.h>
 
 void lcd_init (void){

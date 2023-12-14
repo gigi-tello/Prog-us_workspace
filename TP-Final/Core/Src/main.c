@@ -52,7 +52,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-	uint8_t mostrar_pantalla = PAGINA_OPCIONES;
+uint8_t mostrar_pantalla = PAGINA_OPCIONES;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -73,14 +73,7 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-//	uint8_t opcion = OPCION_MOSTRAR_FECHA;
-//	bool_t en_pant_opciones = true;
-//	bool_t en_pant_fecha = false;
-//	bool_t en_pant_temp = false;
-//	bool_t boton_presionado = false;
-	uint8_t btn_pres = 0;
-	char* btn_str;
-	char msg[16];
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -107,13 +100,13 @@ int main(void)
   MX_I2C1_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
+
   HAL_Delay(100);
-    lcd_init();
-    char mensaje[] = "Hola";
-    lcd_enviar_cadena(mensaje);
-    lcd_pos_cursor(1,5);
-    lcd_enviar_cadena("mundo");
-    HAL_Delay(500);
+  lcd_init();
+  pag_inicio();
+
+  //Descomentar para ajustar fecha y hora
+  // ajustar_fecha_hora(23, 12, 5, 14, 15, 49, 0);
 
   /* USER CODE END 2 */
 
@@ -121,19 +114,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-//	  lcd_borrar();
-//	  lcd_pos_cursor(0,0);
-//	  btn_pres = obtener_boton_presionado();
-//	  btn_str =  str_boton(btn_pres);
-//
-//	  //sprintf(msg, "Valor: %lu\r\n", btn_adc);
-//	  //HAL_UART_Transmit(&huart3, msg, strlen(msg), 1000);
-//	  HAL_UART_Transmit(&huart3, btn_str, strlen(btn_str), 1000);
-//	  HAL_UART_Transmit(&huart3, (char *)"\r\n", strlen("\r\n"), 1000);
-
-//	  lcd_enviar_cadena(btn_str);
-//	  HAL_Delay(500);
-
 	  switch(mostrar_pantalla){
 	      case PAGINA_OPCIONES:
 	    	  pag_opciones();
@@ -147,18 +127,6 @@ int main(void)
 	      default:
 	          break;
 	      }
-
-//	  pag_opciones();
-//	  pag_fila_cursor(OPCION_MOSTRAR_FECHA);
-//	  HAL_Delay(1000);
-//	  pag_opciones();
-//	  pag_fila_cursor(OPCION_MOSTRAR_TEMP);
-//	  HAL_Delay(1000);
-
-//	  pag_fecha();
-//	  HAL_Delay(1000);
-//	  pag_temp();
-//	  HAL_Delay(1000);
 
     /* USER CODE END WHILE */
 

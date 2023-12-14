@@ -1,12 +1,32 @@
+/**
+  ******************************************************************************
+  * @file    pantallas.h
+  * @author  Giselle Tello de Meneses
+  * @brief   Biblioteca con las pantallas a mostrar en el lcd
+  ******************************************************************************
+  **/
+
 #include "pantallas.h"
-#include "usart.h"
+//#include "usart.h"
 
 
+/**
+ * \brief Pantalla con el menu de opciones
+ * 		----------------
+ *     |>Mostrar fecha  |
+ *     | Mostrar temp   |
+ *		----------------
+ *
+ * 	Con los botones ARRIBA y ABAJO se marca la opción, y con el botón ADELANTE
+ * 	se entra a la opción seleccionada.
+ *  El cursor '>' cambia de línea para indicar la opción marcada.
+ *  La variable de posición del cursor también sirve como variable de opción
+ *  seleccionada.
+ *  Implementa un debounce simple para evitar el rebote de los botones del keypad
+ *
+ */
 void pag_opciones(void){
-    /*
-    |>Mostrar fecha  |
-    | Mostrar temp   |
-    */
+
 	bool_t opcion_seleccionada = false;
 	bool_t lectura_boton_habilitada = true;
 
@@ -19,7 +39,7 @@ void pag_opciones(void){
             .duration = 0,
             .running = false
     };
-	char* btn_str;
+	//char* btn_str;
 
 	delayInit(&led_delay, led_time_on_off);
 
@@ -37,11 +57,11 @@ void pag_opciones(void){
 
         if(lectura_boton_habilitada){
         	boton = obtener_boton_presionado();
-    		btn_str =  str_boton(boton);
+    		//btn_str =  str_boton(boton);
         }
 
-  	  HAL_UART_Transmit(&huart3, btn_str, strlen(btn_str), 1000);
-  	  HAL_UART_Transmit(&huart3, (char *)"\r\n", strlen("\r\n"), 1000);
+  	  //HAL_UART_Transmit(&huart3, btn_str, strlen(btn_str), 1000);
+  	  //HAL_UART_Transmit(&huart3, (char *)"\r\n", strlen("\r\n"), 1000);
 
     	switch (boton){
     	case BOT_ABAJO :
@@ -74,26 +94,18 @@ void pag_opciones(void){
     }
 }
 
-void pag_fila_cursor(uint8_t opcion){
-    switch (opcion){
-        case OPCION_MOSTRAR_FECHA:
-        	lcd_pos_cursor(OPCION_MOSTRAR_TEMP, 0);
-            break;
-        case OPCION_MOSTRAR_TEMP:
-        	lcd_pos_cursor(OPCION_MOSTRAR_FECHA, 0);
-            break;
-    }
-    lcd_enviar_cadena(" ");
-    lcd_pos_cursor(opcion, 0);
-    lcd_enviar_cadena(CARACTER_CURSOR);
-    //lcd_enviar_cadena();
-}
-
+/**
+ * \brief Pantalla que muestra la fecha y hora
+ *
+ * 		----------------
+ *     |    dd/mm/aa    |
+ *     |     hh:mm      |
+ *		----------------
+ *
+ * 	El botón ATRAS vuelve al menú principal.
+ *
+ */
 void pag_fecha(void){
-    /*
-    |   dd/mm/aaaa   |
-    |     hh:mm      |
-    */
 
 	char fecha[LARGO_CADENA_FECHA] = "";
 	char hora[LARGO_CADENA_HORA] =  "";
@@ -126,11 +138,19 @@ void pag_fecha(void){
 
 }
 
+/**
+ * \brief Pantalla que muestra la temperatura
+ *
+ * 		----------------
+ *     | Temp: TT.tt C  |
+ *     |                |
+ *		----------------
+ *
+ * 	El botón ATRAS vuelve al menú principal.
+ *
+ */
 void pag_temp(void){
-    /*
-    |   Temp: tt C   |
-    |                |
-    */
+
     char cad_temperatura[LARGO_CADENA_TEMP] = "";
 	bool_t boton_presionado = false;
 	uint8_t boton = BOT_NINGUNO;
@@ -153,7 +173,44 @@ void pag_temp(void){
             default:
                 break;
         }
-
     }
+}
 
+    /**
+     * \brief Ubica al cursor en la opción marcada
+     *
+     *	Utilizando el dato de la opción marcada, borra el cursor
+     *	de la otra opción, y lo dibuja en la correspondiente.
+     *
+     * \param opcion La opción marcada
+     *
+     */
+    void pag_fila_cursor(uint8_t opcion){
+        switch (opcion){
+            case OPCION_MOSTRAR_FECHA:
+            	lcd_pos_cursor(OPCION_MOSTRAR_TEMP, 0);
+                break;
+            case OPCION_MOSTRAR_TEMP:
+            	lcd_pos_cursor(OPCION_MOSTRAR_FECHA, 0);
+                break;
+        }
+        lcd_enviar_cadena(" ");
+        lcd_pos_cursor(opcion, 0);
+        lcd_enviar_cadena(CARACTER_CURSOR);
+        //lcd_enviar_cadena();
+    }
+/**
+ * \brief Muestra la pantalla de inicio
+ *
+ * 		----------------
+ *     |Trabajo practico|
+ *     |     CESE       |
+ *		----------------
+ *
+ */
+void pag_inicio(void){
+    lcd_enviar_cadena(MSJ_INICIO_FILA_1);
+    lcd_pos_cursor(1,5);
+    lcd_enviar_cadena(MSJ_INICIO_FILA_2);
+    HAL_Delay(DELAY_PANT_INICIO);
 }

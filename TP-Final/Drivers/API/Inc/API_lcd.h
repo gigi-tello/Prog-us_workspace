@@ -1,10 +1,34 @@
+/**
+  ******************************************************************************
+  * @file    API_lcd.h
+  * @author  Giselle Tello de Meneses
+  * @brief   Encabezado de la biblioteca para manejar el lcd.
+  ******************************************************************************
+  **/
+
 #ifndef API_LCD_H
 #define API_LCD_H
 
 #include "common.h"
 #include "i2c.h"
 
-#define SLAVE_ADDRESS_LCD 0x4E // change this according to ur setup
+#define SLAVE_ADDRESS_LCD 0x4E //
+
+#define D4_PORT GPIOF
+#define D4_PIN GPIO_PIN_14
+#define D5_PORT GPIOE
+#define D5_PIN GPIO_PIN_11
+#define D6_PORT GPIOE
+#define D6_PIN GPIO_PIN_9
+#define D7_PORT GPIOF
+#define D7_PIN GPIO_PIN_13
+#define RS_PORT GPIOF
+#define RS_PIN GPIO_PIN_12
+#define EN_PORT GPIOD
+#define EN_PIN GPIO_PIN_15
+
+#define TEST_PORT GPIOA
+#define TEST_PIN GPIO_PIN_6
 
 #define RS_COMANDO 0
 #define RS_DATO 1
@@ -26,5 +50,6 @@ void lcd_enviar_dato(char);
 void lcd_enviar_cadena(char*);
 void lcd_pos_cursor(uint8_t, uint8_t);
 void lcd_borrar(void);
+void lcd_enviar(char data, int rs);
 
 #endif /*API_LCD_H*/
