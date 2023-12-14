@@ -27,8 +27,8 @@
 #include "API_uart.h"
 #include "API_lcd_keypad.h"
 #include "API_adc.h"
-#include "lcd.h"
 #include "API_rtc.h"
+//#include "API_lcd_keypad_i2c.h"
 
 /* USER CODE END Includes */
 
@@ -71,6 +71,7 @@ PCD_HandleTypeDef hpcd_USB_OTG_FS;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_ETH_Init(void);
+static void MX_USART3_UART_Init(void);
 static void MX_USB_OTG_FS_PCD_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_I2C1_Init(void);
@@ -109,8 +110,8 @@ int main(void)
 			.seg = 0,
 	};
 	temp_t temp=0;
-	uint8_t msgFh[100];
-	uint8_t msgTmp[10];
+	char msgFh[100];
+	char msgTmp[10];
 
   /* USER CODE END 1 */
 
@@ -128,12 +129,14 @@ int main(void)
 
   /* USER CODE BEGIN SysInit */
   uart_initiailzed = uartInit();
+  lcd_init();
 
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_ETH_Init();
+  MX_USART3_UART_Init();
   MX_USB_OTG_FS_PCD_Init();
   MX_ADC1_Init();
   MX_I2C1_Init();
@@ -144,6 +147,18 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   //ajustar_fecha_hora(23, 12, 8, 6, 11, 59, 30);
+  lcd_send_string("Hola");
+
+//	lcd_put_cur(0, 0);
+//	lcd_send_string("aaa");
+//	lcd_put_cur(1, 0);
+//	lcd_send_string("222");
+
+//	lcd_put_cur_i2c(0, 5);
+//	lcd_send_string_i2c("111");
+//	lcd_put_cur_i2c(1, 0);
+//	lcd_send_string_i2c("222");
+
   while (1)
   {
     /* USER CODE END WHILE */
@@ -158,21 +173,23 @@ int main(void)
 	  // uartSendString(string);
 	//	lcd_enviar_comando(INIT_CMD);
 
-	  fechaHora = leer_fecha_hora();
-	  temp = leer_temp();
-	  sprintf(msgFh, "%u-%u-%u %u:%u:%u\r\n", fechaHora.anio, fechaHora.mes, fechaHora.dia, fechaHora.hora, fechaHora.min, fechaHora.seg);
-	  sprintf(msgTmp, "%.2f C\r\n", temp);
+//	  fechaHora = leer_fecha_hora();
+//	  temp = leer_temp();
+//	  sprintf(msgFh, "%u-%u-%u %u:%u:%u\r\n", fechaHora.anio, fechaHora.mes, fechaHora.dia, fechaHora.hora, fechaHora.min, fechaHora.seg);
+//	  sprintf(msgTmp, "%.2f C\r\n", temp);
 
-	  uartSendString(msgFh);
+//	  uartSendString(msgFh);
+//
+//	  uartSendString(msgTmp);
+	  // delay_us(100);
 
-	  uartSendString(msgTmp);
 
-
-		  BSP_LED_Toggle(LED2);
+	BSP_LED_Toggle(LED2);
 
 	  //HAL_I2C_Master_Transmit(&hi2c1, LCD_ADDR, (uint8_t*)"5", 1, HAL_MAX_DELAY);
 
-		  HAL_Delay(100);
+	HAL_Delay(100);
+
 
 
 
@@ -371,6 +388,39 @@ static void MX_I2C1_Init(void)
   /* USER CODE BEGIN I2C1_Init 2 */
 
   /* USER CODE END I2C1_Init 2 */
+
+}
+
+/**
+  * @brief USART3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART3_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART3_Init 0 */
+
+  /* USER CODE END USART3_Init 0 */
+
+  /* USER CODE BEGIN USART3_Init 1 */
+
+  /* USER CODE END USART3_Init 1 */
+  huart3.Instance = USART3;
+  huart3.Init.BaudRate = 115200;
+  huart3.Init.WordLength = UART_WORDLENGTH_8B;
+  huart3.Init.StopBits = UART_STOPBITS_1;
+  huart3.Init.Parity = UART_PARITY_NONE;
+  huart3.Init.Mode = UART_MODE_TX_RX;
+  huart3.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart3.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART3_Init 2 */
+
+  /* USER CODE END USART3_Init 2 */
 
 }
 

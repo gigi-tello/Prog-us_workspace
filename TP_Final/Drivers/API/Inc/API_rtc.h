@@ -1,9 +1,10 @@
+//RTC por I2C. Se alimenta con 3,3 V
+
 #ifndef API_RTC
 #define API_RTC
 
 #include "common.h"
 
-extern I2C_HandleTypeDef hi2c1;
 
 #define RTC_ADDR 0xD0
 #define MEM_REG 0x00
