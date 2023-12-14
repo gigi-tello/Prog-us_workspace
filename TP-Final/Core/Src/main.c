@@ -82,7 +82,6 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  lcd_init();
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -102,6 +101,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_Delay(100);
 
+  lcd_init();
+
     char mensaje[] = "Hola";
     lcd_enviar_cadena(mensaje);
     lcd_pos_cursor(1,5);
@@ -114,6 +115,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
     while (1)
     {
+    	  // HAL_GPIO_TogglePin(TEST_PORT, TEST_PIN);
+
     	switch(mostrar_pantalla){
     	case PANTALLA_OPCIONES:
     		pant_opciones();

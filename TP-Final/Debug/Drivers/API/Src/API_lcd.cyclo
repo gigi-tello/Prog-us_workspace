@@ -1,5 +1,5 @@
 ../Drivers/API/Src/API_lcd.c:11:6:lcd_init	1
-../Drivers/API/Src/API_lcd.c:81:6:lcd_enviar_cadena	2
+../Drivers/API/Src/API_lcd.c:74:6:lcd_enviar_cadena	2
 ../Drivers/API/Src/API_lcd.c:85:6:lcd_pos_cursor	3
 ../Drivers/API/Src/API_lcd.c:97:6:lcd_borrar	1
 ../Drivers/API/Src/API_lcd.c:103:7:lcd_enviar	1

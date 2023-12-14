@@ -9,29 +9,28 @@
 #include "API_lcd.h"
 
 void lcd_init (void){
-	  HAL_Delay(10);
-	  HAL_GPIO_WritePin(TEST_PORT, TEST_PIN, 0);
-	  HAL_Delay(10);
-	  HAL_GPIO_WritePin(TEST_PORT, TEST_PIN, 1);
-	  HAL_Delay(25);
-	  HAL_GPIO_WritePin(TEST_PORT, TEST_PIN, 0);
-	  HAL_Delay(10);
-	  HAL_GPIO_WritePin(TEST_PORT, TEST_PIN, 1);
-	  HAL_Delay(25);
-	  HAL_GPIO_WritePin(TEST_PORT, TEST_PIN, 0);
-	  HAL_Delay(10);
+//	  HAL_Delay(10);
+//	  HAL_GPIO_WritePin(TEST_PORT, TEST_PIN, 0);
+//	  HAL_Delay(10);
+//	  HAL_GPIO_WritePin(TEST_PORT, TEST_PIN, 1);
+//	  HAL_Delay(25);
+//	  HAL_GPIO_WritePin(TEST_PORT, TEST_PIN, 0);
+//	  HAL_Delay(10);
+//	  HAL_GPIO_WritePin(TEST_PORT, TEST_PIN, 1);
+//	  HAL_Delay(25);
+//	  HAL_GPIO_WritePin(TEST_PORT, TEST_PIN, 0);
+//	  HAL_Delay(10);
 
     // Inicialización para 4 bit
     HAL_Delay(50);  // Esperar >40ms
     lcd_enviar_comando (INIT_CMD);
-    HAL_GPIO_TogglePin(TEST_PORT, TEST_PIN);
 
     HAL_Delay(5);  // Esperar >4.1ms
-    lcd_enviar_comando (INIT_CMD);HAL_GPIO_TogglePin(TEST_PORT, TEST_PIN);
+    lcd_enviar_comando (INIT_CMD);
     HAL_Delay(1);  // Esperar >100us
-    lcd_enviar_comando (INIT_CMD);HAL_GPIO_TogglePin(TEST_PORT, TEST_PIN);
+    lcd_enviar_comando (INIT_CMD);
     HAL_Delay(10);
-    lcd_enviar_comando (MODO_4BIT);HAL_GPIO_TogglePin(TEST_PORT, TEST_PIN);
+    lcd_enviar_comando (MODO_4BIT);
     HAL_Delay(10);
 
   // dislay initialisation
@@ -45,13 +44,7 @@ void lcd_init (void){
     lcd_enviar_comando (ENTRY_MODE_SET); //Entry mode set --> I/D = 1 (increment cursor) & S = 0 (no shift)
     HAL_Delay(1);
     lcd_enviar_comando (BLINK_CURSOR); //Display on/off control --> D = 1, C and B = 0. (Cursor and blink, last two bits)
-	  HAL_Delay(10);
-	  HAL_GPIO_WritePin(TEST_PORT, TEST_PIN, 0);
-	  HAL_Delay(10);
-	  HAL_GPIO_WritePin(TEST_PORT, TEST_PIN, 1);
-	  HAL_Delay(25);
-	  HAL_GPIO_WritePin(TEST_PORT, TEST_PIN, 0);
-	  HAL_Delay(10);
+
 }
 
 //void lcd_enviar_comando (char cmd){
@@ -79,6 +72,13 @@ void lcd_init (void){
 //    HAL_I2C_Master_Transmit (&hi2c1, SLAVE_ADDRESS_LCD,(uint8_t *) data_t, 4, 100);
 //}
 void lcd_enviar_cadena (char *str){
+	  HAL_Delay(10);
+	  HAL_GPIO_WritePin(TEST_PORT, TEST_PIN, 0);
+	  HAL_Delay(10);
+	  HAL_GPIO_WritePin(TEST_PORT, TEST_PIN, 1);
+	  HAL_Delay(25);
+	  HAL_GPIO_WritePin(TEST_PORT, TEST_PIN, 0);
+	  HAL_Delay(10);
     while (*str) lcd_enviar_dato (*str++);
 }
 
@@ -112,10 +112,10 @@ void lcd_borrar(void){
      * if the LCD still doesn't work, increase the delay to 50, 80 or 100..
      */
     HAL_GPIO_WritePin(EN_PORT, EN_PIN, 1);
-    HAL_Delay(1);
+    HAL_Delay(5);
 //  delay (20);
     HAL_GPIO_WritePin(EN_PORT, EN_PIN, 0);
-    HAL_Delay(1);
+    HAL_Delay(5);
 //  delay (20);
 }
 
