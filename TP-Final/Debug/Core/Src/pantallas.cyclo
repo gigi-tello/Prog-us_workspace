@@ -1,5 +1,5 @@
-../Core/Src/pantallas.c:28:6:pag_opciones	12
-../Core/Src/pantallas.c:108:6:pag_fecha	3
-../Core/Src/pantallas.c:152:6:pag_temp	3
-../Core/Src/pantallas.c:188:10:pag_fila_cursor	3
-../Core/Src/pantallas.c:211:6:pag_inicio	1
+../Core/Src/pantallas.c:32:6:pag_opciones	12
+../Core/Src/pantallas.c:112:6:pag_fecha	4
+../Core/Src/pantallas.c:163:6:pag_temp	4
+../Core/Src/pantallas.c:203:10:pag_fila_cursor	3
+../Core/Src/pantallas.c:226:6:pag_inicio	1

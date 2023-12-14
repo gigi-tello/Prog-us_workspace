@@ -8,8 +8,12 @@
 
 #include "pantallas.h"
 //#include "usart.h"
-
-
+    delay_t delay={           //Inicializo la estructura del delay
+            .startTime = 0,
+            .duration = 0,
+            .running = false
+    };
+tick_t tiempo_refresco = TIEMPO_REFRESCO;
 /**
  * \brief Pantalla con el menu de opciones
  * 		----------------
@@ -33,15 +37,15 @@ void pag_opciones(void){
 	uint8_t boton = BOT_NINGUNO;
 	uint8_t pos_cursor = OPCION_MOSTRAR_FECHA;
 
-    tick_t led_time_on_off = 100; //Semiperiodo para una señal de T=200 ms, Duty=50%
-    delay_t led_delay={           //Inicializo la estructura del delay
-            .startTime = 0,
-            .duration = 0,
-            .running = false
-    };
+    tick_t tiempo_debounce_btn = TIEMPO_DEBOUNCE_BOTON;
+//    delay_t btn_delay={           //Inicializo la estructura del delay
+//            .startTime = 0,
+//            .duration = 0,
+//            .running = false
+//    };
 	//char* btn_str;
 
-	delayInit(&led_delay, led_time_on_off);
+	delayInit(&delay, tiempo_debounce_btn);
 
 	lcd_borrar();
 	lcd_pos_cursor(0, 1);
@@ -51,7 +55,7 @@ void pag_opciones(void){
 	pag_fila_cursor(pos_cursor);
 
     while(false == opcion_seleccionada){
-        if(delayRead(&led_delay)){    //Si delayRead devuelve true se cumplió el
+        if(delayRead(&delay)){    //Si delayRead devuelve true se cumplió el
         	lectura_boton_habilitada = true; //tiempo, entonces cambio el estado del led
         }
 
@@ -112,29 +116,36 @@ void pag_fecha(void){
 	bool_t boton_presionado = false;
 	uint8_t boton = BOT_NINGUNO;
 
-	obtener_fecha(fecha);
-	obtener_hora(hora);
+	delayInit(&delay, tiempo_refresco);
 
-    lcd_borrar();
-    lcd_pos_cursor(0, 4);
-    lcd_enviar_cadena(fecha);
+	while(false == boton_presionado){
 
-    lcd_pos_cursor(1, 5);
-    lcd_enviar_cadena(hora);
 
-    while(boton_presionado == false){
-    	boton = obtener_boton_presionado();
 
-        switch (boton){
-            case BOT_ATRAS:
-            	mostrar_pantalla = PAGINA_OPCIONES;
-            	boton_presionado = true;
-                break;
-            default:
-                break;
-        }
+		if(delayRead(&delay)){    //Si se cumplió el tiempo de refresco
+			obtener_fecha(fecha); //reimprimo la pantalla
+			obtener_hora(hora);
 
-    }
+			lcd_borrar();
+			lcd_pos_cursor(0, 4);
+			lcd_enviar_cadena(fecha);
+
+			lcd_pos_cursor(1, 5);
+			lcd_enviar_cadena(hora);
+		}
+
+		boton = obtener_boton_presionado();
+
+		switch (boton){
+		case BOT_ATRAS:
+			mostrar_pantalla = PAGINA_OPCIONES;
+			boton_presionado = true;
+			break;
+		default:
+			break;
+		}
+
+	}
 
 }
 
@@ -154,26 +165,30 @@ void pag_temp(void){
     char cad_temperatura[LARGO_CADENA_TEMP] = "";
 	bool_t boton_presionado = false;
 	uint8_t boton = BOT_NINGUNO;
+	delayInit(&delay, tiempo_refresco);
 
-    obtener_temp(cad_temperatura);
-    //sprintf(cad_temperatura,"Temp: %d \004C", temperatura_ext); // \004 está definido en caracteres.h para el símbolo de grado
+	while(false == boton_presionado){
 
-    lcd_borrar();
-    lcd_pos_cursor(0, 0);
-    lcd_enviar_cadena(cad_temperatura);
 
-    while(boton_presionado == false){
-    	boton = obtener_boton_presionado();
+		if(delayRead(&delay)){    			//Si se cumplió el tiempo de refresco
+			obtener_temp(cad_temperatura); //reimprimo la pantalla
+			lcd_borrar();
+			lcd_pos_cursor(0, 0);
+			lcd_enviar_cadena(cad_temperatura);
+		}
 
-        switch (boton){
-            case BOT_ATRAS:
-            	mostrar_pantalla = PAGINA_OPCIONES;
-            	boton_presionado = true;
-                break;
-            default:
-                break;
-        }
-    }
+
+		boton = obtener_boton_presionado();
+
+		switch (boton){
+		case BOT_ATRAS:
+			mostrar_pantalla = PAGINA_OPCIONES;
+			boton_presionado = true;
+			break;
+		default:
+			break;
+		}
+	}
 }
 
     /**
