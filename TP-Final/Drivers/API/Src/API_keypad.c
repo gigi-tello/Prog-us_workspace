@@ -14,7 +14,10 @@
  * \brief Evalúa qué botón se presionó.
  *
  *  El shield LCD tiene un arreglo de botones que forma un divisor resistivo
- *  que cambia según el pulsador que se presiona. La salida está conectada a A0.
+ *  que cambia según el pulsador que se presiona, aproximadamente 1V por botón.
+ *  Se fijaron límites según los resistores mencionados en la hoja de datos,
+ *  dejando un margen.
+ *  La salida está conectada a A0.
  *
  * \return El botón presionado.
  */

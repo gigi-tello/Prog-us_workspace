@@ -14,7 +14,6 @@
  * \return El valor leído
  */
 uint32_t leer_adc(void){
-	// ADC_HandleTypeDef hadc;
 	uint32_t valor = 0;
 
 	HAL_ADC_Start(&hadc1);

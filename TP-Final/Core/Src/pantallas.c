@@ -50,7 +50,7 @@ void pag_opciones(void){
     lcd_enviar_cadena(MSJ_MOSTRAR_TEMP);
 	pag_fila_cursor(pos_cursor);
 
-    while(opcion_seleccionada == false){
+    while(false == opcion_seleccionada){
         if(delayRead(&led_delay)){    //Si delayRead devuelve true se cumplió el
         	lectura_boton_habilitada = true; //tiempo, entonces cambio el estado del led
         }
