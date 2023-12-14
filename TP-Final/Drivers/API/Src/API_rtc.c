@@ -1,3 +1,13 @@
+/**
+  ******************************************************************************
+  * @file    API_rtc.c
+  * @author  Giselle Tello de Meneses
+  * @brief   Biblioteca para manejar el RTC DS3231.
+  * El integrado se comunica por I2C y, además de la fecha y hora, cuenta con un
+  * sensor de temperatura.
+  ******************************************************************************
+  **/
+
 #include "API_rtc.h"
 
 // Convierte de decimal a bcd
@@ -27,6 +37,11 @@ dateTime_t leer_fecha_hora(void){
 	return dato;
 }
 
+/**
+ * \brief Genera una cadena para mostrar la fecha.
+ *
+ * \param char* temp El puntero a la cadena.
+ */
 void obtener_fecha(char* fecha){
 
 	dateTime_t fecha_hora = leer_fecha_hora();
@@ -35,6 +50,11 @@ void obtener_fecha(char* fecha){
 	return;
 }
 
+/**
+ * \brief Genera una cadena para mostrar la hora.
+ *
+ * \param char* temp El puntero a la cadena.
+ */
 void obtener_hora(char* hora){
 	dateTime_t fecha_hora = leer_fecha_hora();
 
@@ -55,9 +75,15 @@ void ajustar_fecha_hora(uint8_t anio, uint8_t mes, uint8_t dia_semana, uint8_t d
 	HAL_I2C_Mem_Write(&hi2c1, RTC_ADDR, MEM_REG, 1, set_time, CANT_REG_FH, RTC_TIMEOUT);
 }
 
-//Lee la temperatura desde los registros 0x11 y 0x12
-//En 0x11 está la parte entera del valor, y en 0x12 la parte decimal
-//La resolución es 0.25gC por eso la parte decimal se divide por 4
+/**
+ * \brief Lee la temperatura del DS3231
+ *
+ * Lee la temperatura desde los registros 0x11 y 0x12.
+ * En 0x11 está la parte entera del valor, y en 0x12 la parte decimal.
+ * La resolución es 0.25gC por eso la parte decimal se divide por 4
+ *
+ * \return La temperatura sensada.
+ */
 temp_t leer_temp (void){
 	uint8_t temp[2];
 	HAL_I2C_Mem_Read(&hi2c1, RTC_ADDR, TEMP_REG, 1, temp, CANT_REG_TEMP, RTC_TIMEOUT);
@@ -65,9 +91,16 @@ temp_t leer_temp (void){
 	return ((temp[0])+(temp[1]>>6)*0.25);
 }
 
+/**
+ * \brief Genera una cadena para mostrar la temperatura.
+ *
+ * \param char* temp El puntero a la cadena.
+ */
 void obtener_temp(char* temp){
 	temp_t temperatura = leer_temp();
 
 	sprintf(temp, FORMATO_TEMP, temperatura);
 	return;
 }
+
+

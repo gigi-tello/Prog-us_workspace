@@ -1,3 +1,11 @@
+/**
+  ******************************************************************************
+  * @file    API_keypad.h
+  * @author  Giselle Tello de Meneses
+  * @brief   Encabezado de la biblioteca para leer valores del ADC.
+  ******************************************************************************
+  **/
+
 #ifndef API_ADC_H
 #define API_ADC_H
 

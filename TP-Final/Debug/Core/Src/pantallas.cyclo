@@ -1,4 +1,4 @@
-../Core/Src/pantallas.c:5:6:pag_opciones	12
-../Core/Src/pantallas.c:77:6:pag_fila_cursor	3
-../Core/Src/pantallas.c:92:6:pag_fecha	3
-../Core/Src/pantallas.c:129:6:pag_temp	3
+../Core/Src/pantallas.c:27:6:pant_opciones	12
+../Core/Src/pantallas.c:104:6:pant_fecha	3
+../Core/Src/pantallas.c:147:6:pant_temp	3
+../Core/Src/pantallas.c:183:6:pant_fila_cursor	3

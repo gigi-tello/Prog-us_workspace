@@ -52,7 +52,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-	uint8_t mostrar_pantalla = PAGINA_OPCIONES;
+uint8_t mostrar_pantalla = PANTALLA_OPCIONES;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -73,14 +73,7 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-//	uint8_t opcion = OPCION_MOSTRAR_FECHA;
-//	bool_t en_pant_opciones = true;
-//	bool_t en_pant_fecha = false;
-//	bool_t en_pant_temp = false;
-//	bool_t boton_presionado = false;
-	uint8_t btn_pres = 0;
-	char* btn_str;
-	char msg[16];
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -89,7 +82,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  lcd_init();
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -108,7 +101,7 @@ int main(void)
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
   HAL_Delay(100);
-    lcd_init();
+
     char mensaje[] = "Hola";
     lcd_enviar_cadena(mensaje);
     lcd_pos_cursor(1,5);
@@ -119,51 +112,26 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-//	  lcd_borrar();
-//	  lcd_pos_cursor(0,0);
-//	  btn_pres = obtener_boton_presionado();
-//	  btn_str =  str_boton(btn_pres);
-//
-//	  //sprintf(msg, "Valor: %lu\r\n", btn_adc);
-//	  //HAL_UART_Transmit(&huart3, msg, strlen(msg), 1000);
-//	  HAL_UART_Transmit(&huart3, btn_str, strlen(btn_str), 1000);
-//	  HAL_UART_Transmit(&huart3, (char *)"\r\n", strlen("\r\n"), 1000);
-
-//	  lcd_enviar_cadena(btn_str);
-//	  HAL_Delay(500);
-
-	  switch(mostrar_pantalla){
-	      case PAGINA_OPCIONES:
-	    	  pag_opciones();
-	          break;
-	      case PAGINA_FECHA:
-	    	  pag_fecha();
-	          break;
-	      case PAGINA_TEMP:
-	    	  pag_temp();
-	          break;
-	      default:
-	          break;
-	      }
-
-//	  pag_opciones();
-//	  pag_fila_cursor(OPCION_MOSTRAR_FECHA);
-//	  HAL_Delay(1000);
-//	  pag_opciones();
-//	  pag_fila_cursor(OPCION_MOSTRAR_TEMP);
-//	  HAL_Delay(1000);
-
-//	  pag_fecha();
-//	  HAL_Delay(1000);
-//	  pag_temp();
-//	  HAL_Delay(1000);
+    while (1)
+    {
+    	switch(mostrar_pantalla){
+    	case PANTALLA_OPCIONES:
+    		pant_opciones();
+    		break;
+    	case PANTALLA_FECHA:
+    		pant_fecha();
+    		break;
+    	case PANTALLA_TEMP:
+    		pant_temp();
+    		break;
+    	default:
+    		break;
+    	}
 
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  }
+    }
   /* USER CODE END 3 */
 }
 
